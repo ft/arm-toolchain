@@ -2,6 +2,7 @@ PACKAGES = gcc-arm-none-eabi-snapshot gdb-binutils-arm-none-eabi-snapshot
 
 SH = /bin/sh
 CP = /bin/cp
+GENERATE_CHROOT = $(SH) ./tools/generate-chroot
 GENERATE_ORIGINALS = $(SH) ./tools/generate-originals
 GENERATE_SOURCE_PKGS = $(SH) ./tools/generate-source-pkgs
 GENERATE_BINARY_PKGS = $(SH) ./tools/generate-binary-pkgs
@@ -12,13 +13,16 @@ PBUILDER_RESULTS = ./cache/pbuilder/results
 
 all: prepare source-packages binary-packages fetch-results
 
+chroot:
+	$(GENERATE_CHROOT)
+
 prepare:
 	$(GENERATE_ORIGINALS) $(PACKAGES)
 
 source-packages: prepare
 	$(GENERATE_SOURCE_PKGS) $(PACKAGES)
 
-binary-packages: source-packages
+binary-packages: source-packages chroot
 	$(GENERATE_BINARY_PKGS) $(PACKAGES)
 
 clean:
@@ -32,4 +36,4 @@ $(PACKAGES)::
 	$(GENERATE_SOURCE_PKGS) $@
 	$(GENERATE_BINARY_PKGS) $@
 
-.PHONY: all binary-packages clean fetch-results prepare source-packages
+.PHONY: all binary-packages chroot clean fetch-results prepare source-packages

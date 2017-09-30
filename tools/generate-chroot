@@ -1,0 +1,15 @@
+#!/bin/sh
+
+already_done () {
+    pkg="$1"
+    version="$2"
+    arch=$(dpkg-architecture -qDEB_BUILD_ARCH)
+    test -d cache || return 1
+    test -d cache/pbuilder || return 1
+    test -f cache/pbuilder/base.tgz || return 1
+    printf 'PBuilder chroot tarball already exists.\n' \
+    return 0
+}
+
+already_done "$pkg" "$version" && exit 0
+exec sh ./tools/pbuilder create
