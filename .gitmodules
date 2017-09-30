@@ -1,0 +1,6 @@
+[submodule "gcc-arm-none-eabi-snapshot"]
+	path = gcc-arm-none-eabi-snapshot
+	url = https://github.com/ft/gcc-arm-none-eabi-snapshot.git
+[submodule "gdb-binutils-arm-none-eabi-snapshot"]
+	path = gdb-binutils-arm-none-eabi-snapshot
+	url = https://github.com/ft/gdb-binutils-arm-none-eabi-snapshot.git
