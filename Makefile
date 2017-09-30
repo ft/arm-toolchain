@@ -11,7 +11,7 @@ MAKE_CLEAN = $(SH) ./tools/make-clean
 PBUILDER = $(SH) ./tools/pbuilder
 PBUILDER_RESULTS = ./cache/pbuilder/results
 
-all: prepare source-packages binary-packages fetch-results
+all: fetch-results
 
 chroot:
 	$(GENERATE_CHROOT)
