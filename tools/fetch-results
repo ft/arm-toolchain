@@ -1,0 +1,35 @@
+#!/bin/sh
+
+results="$1"
+shift
+
+already_done () {
+    pkg="$1"
+    version="$2"
+    arch="$3"
+    base="${pkg}_${version}_${arch}"
+    test -e "${base}".changes || return 1
+    test -e "${base}".deb || return 1
+    printf 'Binary files for %s version %s already exists.\n' \
+           "$pkg" "$version"
+    return 0
+}
+
+fetch_result () {
+    dir="$1"
+    pkg="$2"
+    version="$3"
+    arch="$4"
+    base="${pkg}_${version}_${arch}"
+    for ext in build buildinfo changes deb; do
+        (set -x; cp "$dir"/"$base"."$ext" . || exit 1) || exit 1
+    done
+}
+
+for pkg in "$@"; do
+    version=$(dpkg-parsechangelog -l "$pkg"/debian/changelog \
+              | sed -ne "s/^Version: \(.*\)/\1/p")
+    arch=$(dpkg-architecture -qDEB_BUILD_ARCH)
+    already_done "$pkg" "$version" "$arch" && continue
+    fetch_result "$results" "$pkg" "$version" "$arch"
+done

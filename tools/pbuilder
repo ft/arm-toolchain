@@ -1,0 +1,27 @@
+#!/bin/sh
+
+euid=$(id -u)
+
+cmd="$1"
+shift
+
+case "$cmd" in
+build)
+    pkg="$1"
+    shift
+    version=$(dpkg-parsechangelog -l "$pkg"/debian/changelog \
+              | sed -ne "s/^Version: \(.*\)/\1/p")
+    dsc="${pkg}_${version}.dsc"
+    set -- "$dsc"
+    ;;
+esac
+
+if test "$euid" = 0; then
+    pbuilder "$cmd" --configfile ./pbuilder.conf "$@"
+    rc=$?
+else
+    sudo -u root pbuilder "$cmd" --configfile ./pbuilder.conf "$@"
+    rc=$?
+fi
+
+exit "$rc"

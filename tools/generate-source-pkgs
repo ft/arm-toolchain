@@ -1,0 +1,18 @@
+#!/bin/sh
+
+already_done () {
+    pkg="$1"
+    version="$2"
+    test -e "${pkg}_${version}".debian.tar.xz || return 1
+    test -e "${pkg}_${version}".dsc || return 1
+    printf 'Source package for %s version %s already exists.\n' \
+           "$pkg" "$version"
+    return 0
+}
+
+for pkg in "$@"; do
+    version=$(dpkg-parsechangelog -l "$pkg"/debian/changelog \
+              | sed -ne "s/^Version: \(.*\)/\1/p")
+    already_done "$pkg" "$version" && continue
+    (cd "$pkg" && dpkg-buildpackage -S;)
+done

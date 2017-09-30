@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for pkg in "$@"; do
+    (cd "$pkg" && make -f debian/rules generate-orig-tarball;)
+done

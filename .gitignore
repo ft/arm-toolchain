@@ -1,0 +1,16 @@
+.*
+!.gitignore
+!.gitmodules
+*~
+\#*\#
+newlib-snapshot
+cache
+*.dsc
+*.deb
+*.build
+*.buildinfo
+*.changes
+*.debian.tar.xz
+*.debian.tar.gz
+*.orig.tar.xz
+*.orig.tar.gz

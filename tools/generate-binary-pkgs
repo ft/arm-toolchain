@@ -1,0 +1,19 @@
+#!/bin/sh
+
+already_done () {
+    pkg="$1"
+    version="$2"
+    arch=$(dpkg-architecture -qDEB_BUILD_ARCH)
+    test -e "${pkg}_${version}_${arch}".changes || return 1
+    test -e "${pkg}_${version}_${arch}".deb || return 1
+    printf 'Binary package for %s version %s already exists.\n' \
+           "$pkg" "$version"
+    return 0
+}
+
+for pkg in "$@"; do
+    version=$(dpkg-parsechangelog -l "$pkg"/debian/changelog \
+              | sed -ne "s/^Version: \(.*\)/\1/p")
+    already_done "$pkg" "$version" && continue
+    sudo sh ./tools/pbuilder build "$pkg"
+done

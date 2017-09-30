@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for pkg in "$@"; do
+    for file in "$pkg"*.*; do
+        (set -x; rm -f "$file";)
+    done
+done
