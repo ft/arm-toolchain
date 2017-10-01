@@ -4,4 +4,5 @@ for pkg in "$@"; do
     for file in "$pkg"*.*; do
         (set -x; rm -f "$file";)
     done
+    (cd "$pkg" && make -f debian/rules clean;)
 done
