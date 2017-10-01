@@ -18,5 +18,5 @@ for pkg in "$@"; do
     version=$(dpkg-parsechangelog -l "$pkg"/debian/changelog \
               | sed -ne "s/^Version: \(.*\)/\1/p")
     already_done "$pkg" "$version" && continue
-    sudo sh ./tools/pbuilder build "$pkg"
+    sudo bash ./tools/pbuilder build "$pkg"
 done

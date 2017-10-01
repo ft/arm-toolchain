@@ -1,6 +1,7 @@
 PACKAGES = gcc-arm-none-eabi-snapshot gdb-binutils-arm-none-eabi-snapshot
 
 SH = /bin/sh
+BASH = /bin/bash
 CP = /bin/cp
 GENERATE_CHROOT = $(SH) ./tools/generate-chroot
 GENERATE_ORIGINALS = $(SH) ./tools/generate-originals
@@ -8,7 +9,7 @@ GENERATE_SOURCE_PKGS = $(SH) ./tools/generate-source-pkgs
 GENERATE_BINARY_PKGS = $(SH) ./tools/generate-binary-pkgs
 FETCH_RESULTS = $(SH) ./tools/fetch-results
 MAKE_CLEAN = $(SH) ./tools/make-clean
-PBUILDER = $(SH) ./tools/pbuilder
+PBUILDER = $(BASH) ./tools/pbuilder
 PBUILDER_RESULTS = ./cache/pbuilder/results
 
 all: fetch-results

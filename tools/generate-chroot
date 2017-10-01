@@ -12,4 +12,4 @@ already_done () {
 }
 
 already_done "$pkg" "$version" && exit 0
-exec sh ./tools/pbuilder create
+exec bash ./tools/pbuilder create
