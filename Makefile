@@ -43,6 +43,7 @@ squeaky-clean:
 	@printf '    This target is really destructive!\n\n'
 	@$(SH) ./tools/really
 	$(MAKE) pretty-clean
+	sudo rm -Rf cache
 	git clean -xdf
 
 fetch-results: binary-packages
