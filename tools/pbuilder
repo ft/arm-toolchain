@@ -24,4 +24,12 @@ else
     rc=$?
 fi
 
+case "$cmd" in
+create)
+    source pbuilder.conf || exit 1
+    test -d "${BUILDRESULT}" || sudo mkdir -p "${BUILDRESULT}"
+    sudo chown "${BUILDRESULTUID}:${BUILDRESULTGID}" "${BUILDRESULT}"
+    ;;
+esac
+
 exit "$rc"
