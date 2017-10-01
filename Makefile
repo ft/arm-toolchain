@@ -38,7 +38,11 @@ cleaner: clean
 pretty-clean: cleaner
 	rm -f $(PBUILDER_RESULTS)/*.*
 
-squeaky-clean: pretty-clean
+squeaky-clean:
+	@printf 'WARNING!\n'
+	@printf '    This target is really destructive!\n\n'
+	@$(SH) ./tools/really
+	$(MAKE) pretty-clean
 	git clean -xdf
 
 fetch-results: binary-packages

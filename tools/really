@@ -1,0 +1,13 @@
+#!/bin/sh
+
+printf 'If you really would like to carry on, type "yes" and hit Enter.\n\n'
+printf ' >>> '
+
+IFS= read -r ans
+if test "x$ans" = "xyes"; then
+    true
+    exit "$?"
+fi
+
+false
+exit "$?"
