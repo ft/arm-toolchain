@@ -32,6 +32,15 @@ clean:
 	rm -f *~
 	@$(MAKE_CLEAN) $(PACKAGES)
 
+cleaner: clean
+	git submodule foreach --recursive git clean -xdf
+
+pretty-clean: cleaner
+	rm -f $(PBUILDER_RESULTS)/*.*
+
+squeaky-clean: pretty-clean
+	git clean -xdf
+
 fetch-results: binary-packages
 	$(FETCH_RESULTS) $(PBUILDER_RESULTS) $(PACKAGES)
 
@@ -39,5 +48,5 @@ $(PACKAGES)::
 	$(GENERATE_SOURCE_PKGS) $@
 	$(GENERATE_BINARY_PKGS) $@
 
-.PHONY: all binary-packages chroot clean fetch-results prepare source-packages
-.PHONY: user
+.PHONY: all binary-packages chroot fetch-results prepare source-packages
+.PHONY: user clean cleaner pretty-clean squeaky-clean
