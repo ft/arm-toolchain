@@ -29,7 +29,7 @@ binary-packages: source-packages chroot
 	$(GENERATE_BINARY_PKGS) $(PBUILDER_RESULTS) $(PACKAGES)
 
 clean:
-	rm -f *~
+	rm -f user.txt *~
 	@$(MAKE_CLEAN) $(PACKAGES)
 
 cleaner: clean
