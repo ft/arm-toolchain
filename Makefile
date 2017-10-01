@@ -13,7 +13,10 @@ PBUILDER_RESULTS = ./cache/pbuilder/results
 
 all: fetch-results
 
-chroot:
+user:
+	test -e user.txt || (id -u > user.txt && id -g >> user.txt)
+
+chroot: user
 	$(GENERATE_CHROOT)
 
 prepare:
@@ -37,3 +40,4 @@ $(PACKAGES)::
 	$(GENERATE_BINARY_PKGS) $@
 
 .PHONY: all binary-packages chroot clean fetch-results prepare source-packages
+.PHONY: user

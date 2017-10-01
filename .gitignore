@@ -5,6 +5,7 @@
 \#*\#
 newlib-snapshot
 cache
+user.txt
 *.dsc
 *.deb
 *.build
