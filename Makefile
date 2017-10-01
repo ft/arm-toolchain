@@ -23,7 +23,7 @@ source-packages: prepare
 	$(GENERATE_SOURCE_PKGS) $(PACKAGES)
 
 binary-packages: source-packages chroot
-	$(GENERATE_BINARY_PKGS) $(PACKAGES)
+	$(GENERATE_BINARY_PKGS) $(PBUILDER_RESULTS) $(PACKAGES)
 
 clean:
 	rm -f *~

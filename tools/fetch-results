@@ -3,16 +3,12 @@
 results="$1"
 shift
 
-already_done () {
-    pkg="$1"
-    version="$2"
-    arch="$3"
-    base="${pkg}_${version}_${arch}"
-    test -e "${base}".changes || return 1
-    test -e "${base}".deb || return 1
-    printf 'Binary files for %s version %s already exists.\n' \
-           "$pkg" "$version"
-    return 0
+try_and_copy () {
+    __file="$1"
+    __base="${__file##*/}"
+    if (! test -f "$__base") && test -f "$__file"; then
+        (set -x; cp "$__file" . || exit 1) || exit 1
+    fi
 }
 
 fetch_result () {
@@ -21,15 +17,37 @@ fetch_result () {
     version="$3"
     arch="$4"
     base="${pkg}_${version}_${arch}"
-    for ext in build buildinfo changes deb; do
-        (set -x; cp "$dir"/"$base"."$ext" . || exit 1) || exit 1
+    dsc="${pkg}_${version}.dsc"
+    for ext in build buildinfo changes; do
+        file="$dir"/"$base"."$ext"
+        try_and_copy "$file"
     done
+    state=find-pkgs
+    while IFS= read -r line; do
+        case "$state" in
+        find-pkgs)
+            test "$line" = "Package-List:" || continue
+            state=process
+            ;;
+        process)
+            case "$line" in
+            " "*) : ;;
+            *) break ;;
+            esac
+            pkg=$(printf '%s' "$line" | awk '{print $1}')
+            file="$dir"/"$pkg"_"$version"_"$arch".deb
+            try_and_copy "$file"
+            file="$dir"/"$pkg"_"$version"_"all".deb
+            try_and_copy "$file"
+            file="$dir"/"$pkg"-dbgsym_"$version"_"$arch".deb
+            try_and_copy "$file"
+        esac
+    done < "$dsc"
 }
 
 for pkg in "$@"; do
     version=$(dpkg-parsechangelog -l "$pkg"/debian/changelog \
               | sed -ne "s/^Version: \(.*\)/\1/p")
     arch=$(dpkg-architecture -qDEB_BUILD_ARCH)
-    already_done "$pkg" "$version" "$arch" && continue
     fetch_result "$results" "$pkg" "$version" "$arch"
 done

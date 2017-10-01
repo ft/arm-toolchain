@@ -1,11 +1,14 @@
 #!/bin/sh
 
+results="$1"
+shift
+
 already_done () {
     pkg="$1"
     version="$2"
     arch=$(dpkg-architecture -qDEB_BUILD_ARCH)
-    test -e "${pkg}_${version}_${arch}".changes || return 1
-    test -e "${pkg}_${version}_${arch}".deb || return 1
+    test -e "${results}/${pkg}_${version}_${arch}".changes || return 1
+    test -e "${results}/${pkg}_${version}_${arch}".deb || return 1
     printf 'Binary package for %s version %s already exists.\n' \
            "$pkg" "$version"
     return 0
