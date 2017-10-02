@@ -1,4 +1,4 @@
-PACKAGES = gcc-arm-none-eabi-snapshot gdb-binutils-arm-none-eabi-snapshot
+PACKAGES = gdb-binutils-arm-none-eabi-snapshot gcc-arm-none-eabi-snapshot
 
 SH = /bin/sh
 BASH = /bin/bash
