@@ -14,5 +14,5 @@ for pkg in "$@"; do
     version=$(dpkg-parsechangelog -l "$pkg"/debian/changelog \
               | sed -ne "s/^Version: \(.*\)/\1/p")
     already_done "$pkg" "$version" && continue
-    (cd "$pkg" && dpkg-buildpackage -S;)
+    (cd "$pkg" && dpkg-buildpackage -S -d;)
 done
