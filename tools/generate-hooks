@@ -1,0 +1,41 @@
+#!/bin/bash
+
+. ./pbuilder.conf
+
+src="pbuilder-hooks.in"
+dst="pbuilder-hooks"
+
+if ! test -d "$dst"; then
+    mkdir "$dst" || exit 1
+fi
+
+uptodate () {
+    _in="$1"
+    _out="$2"
+    test -f "$_out" || return 1
+    test "$_in" -nt "$_out" && return 1
+    printf 'Already up-to-date: %s\n' "$_out"
+    return 0
+}
+
+makehook () {
+    _in="$1"
+    _out="$2"
+    printf 'Building: %s\n' "$_out"
+    sed -e 's#@@BUILDRESULT@@#'"${BUILDRESULT}"'#' \
+        < "$_in" > "$_out" || return 1
+    chmod 0755 "$_out" || return 1
+}
+
+for hook in "$src"/*; do
+    _base="${hook##*/}"
+    case "$_base" in
+    *~) continue ;;
+    "#"*) continue ;;
+    *) ;;
+    esac
+    uptodate "$hook" "$dst"/"$_base" && continue
+    makehook "$hook" "$dst"/"$_base" || exit 1
+done
+
+exit 0

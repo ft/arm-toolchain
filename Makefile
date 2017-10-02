@@ -4,6 +4,7 @@ SH = /bin/sh
 BASH = /bin/bash
 CP = /bin/cp
 GENERATE_CHROOT = $(SH) ./tools/generate-chroot
+GENERATE_HOOKS = $(BASH) ./tools/generate-hooks
 GENERATE_ORIGINALS = $(SH) ./tools/generate-originals
 GENERATE_SOURCE_PKGS = $(SH) ./tools/generate-source-pkgs
 GENERATE_BINARY_PKGS = $(SH) ./tools/generate-binary-pkgs
@@ -18,7 +19,10 @@ all: fetch-results
 user:
 	test -e user.txt || (id -u > user.txt && id -g >> user.txt)
 
-chroot: user
+chroot-hooks:
+	$(GENERATE_HOOKS)
+
+chroot: user chroot-hooks
 	$(GENERATE_CHROOT)
 
 chroot-update: chroot

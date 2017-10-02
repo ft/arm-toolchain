@@ -5,6 +5,7 @@
 \#*\#
 newlib-snapshot
 cache
+pbuilder-hooks/
 user.txt
 *.dsc
 *.deb

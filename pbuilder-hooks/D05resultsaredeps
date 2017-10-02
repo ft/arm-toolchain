@@ -1,5 +1,0 @@
-#!/bin/sh
-set -x
-(cd "$BUILDRESULT" &&
- apt-ftparchive packages . > Packages)
-apt-get update
