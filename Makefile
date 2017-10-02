@@ -39,6 +39,7 @@ binary-packages: source-packages chroot
 
 clean:
 	rm -f user.txt *~
+	rm -Rf pbuilder-hooks
 	@$(MAKE_CLEAN) $(PACKAGES)
 
 cleaner: clean
