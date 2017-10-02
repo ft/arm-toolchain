@@ -62,5 +62,6 @@ $(PACKAGES)::
 	$(GENERATE_SOURCE_PKGS) $@
 	$(GENERATE_BINARY_PKGS) $@
 
-.PHONY: all binary-packages chroot fetch-results prepare source-packages
+.PHONY: all binary-packages fetch-results prepare source-packages
+.PHONY: chroot chroot-hooks chroot-update
 .PHONY: user clean cleaner pretty-clean squeaky-clean
