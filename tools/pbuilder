@@ -2,10 +2,24 @@
 
 euid=$(id -u)
 
+. ./pbuilder.conf || exit 1
+
+build_results () {
+    test -d "${BUILDRESULT}" || sudo mkdir -p "${BUILDRESULT}"
+    sudo chown "${BUILDRESULTUID}:${BUILDRESULTGID}" "${BUILDRESULT}"
+}
+
+build_packages () {
+    test -f "${BUILDRESULT}/Packages" || sudo touch "${BUILDRESULT}/Packages"
+}
+
 cmd="$1"
 shift
 
 case "$cmd" in
+update)
+    build_packages
+    ;;
 build)
     pkg="$1"
     shift
@@ -20,15 +34,14 @@ if test "$euid" = 0; then
     pbuilder "$cmd" --configfile ./pbuilder.conf "$@"
     rc=$?
 else
-    sudo -u root pbuilder "$cmd" --configfile ./pbuilder.conf "$@"
+    sudo -E -u root pbuilder "$cmd" --configfile ./pbuilder.conf "$@"
     rc=$?
 fi
 
 case "$cmd" in
-create)
-    . ./pbuilder.conf || exit 1
-    test -d "${BUILDRESULT}" || sudo mkdir -p "${BUILDRESULT}"
-    sudo chown "${BUILDRESULTUID}:${BUILDRESULTGID}" "${BUILDRESULT}"
+create|update)
+    build_results
+    build_packages
     ;;
 esac
 

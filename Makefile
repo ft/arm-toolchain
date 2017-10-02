@@ -20,6 +20,9 @@ user:
 chroot: user
 	$(GENERATE_CHROOT)
 
+chroot-update: chroot
+	$(PBUILDER) update --override-config
+
 prepare:
 	$(GENERATE_ORIGINALS) $(PACKAGES)
 
