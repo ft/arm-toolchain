@@ -2,6 +2,12 @@
 
 for pkg in "$@"; do
     for file in "$pkg"*.*; do
+        case "$file" in
+        *.orig.tar.*)
+            printf 'Skipping orig tarball: %s\n' "$file"
+            continue
+            ;;
+        *) ;;
         (set -x; rm -f "$file";)
     done
     (cd "$pkg" && make -f debian/rules clean;)
