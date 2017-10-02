@@ -11,6 +11,7 @@ FETCH_RESULTS = $(SH) ./tools/fetch-results
 MAKE_CLEAN = $(SH) ./tools/make-clean
 PBUILDER = $(BASH) ./tools/pbuilder
 PBUILDER_RESULTS = ./cache/pbuilder/results
+PB_UPDATE_FLAGS =
 
 all: fetch-results
 
@@ -21,7 +22,7 @@ chroot: user
 	$(GENERATE_CHROOT)
 
 chroot-update: chroot
-	$(PBUILDER) update --override-config
+	$(PBUILDER) update $(PB_UPDATE_FLAGS)
 
 prepare:
 	$(GENERATE_ORIGINALS) $(PACKAGES)
