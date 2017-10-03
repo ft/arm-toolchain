@@ -3,10 +3,18 @@
 results="$1"
 shift
 
-try_and_copy () {
+needtocopy () {
     __file="$1"
     __base="${__file##*/}"
-    if (! test -f "$__base") && test -f "$__file"; then
+    test -f "$__file" || return 1
+    test -f "$__base" || return 0
+    test "$__file" -nt "$__base" && return 0
+    return 1
+}
+
+try_and_copy () {
+    __file="$1"
+    if needtocopy "$__file"; then
         (set -x; cp "$__file" . || exit 1) || exit 1
     fi
 }
