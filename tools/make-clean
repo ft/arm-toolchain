@@ -8,6 +8,7 @@ for pkg in "$@"; do
             continue
             ;;
         *) ;;
+        esac
         (set -x; rm -f "$file";)
     done
     (cd "$pkg" && make -f debian/rules clean;)
