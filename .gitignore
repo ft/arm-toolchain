@@ -3,7 +3,6 @@
 !.gitmodules
 *~
 \#*\#
-newlib-snapshot
 cache
 pbuilder-hooks/
 user.txt

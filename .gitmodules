@@ -4,3 +4,6 @@
 [submodule "gdb-binutils-arm-none-eabi-snapshot"]
 	path = gdb-binutils-arm-none-eabi-snapshot
 	url = https://github.com/ft/gdb-binutils-arm-none-eabi-snapshot.git
+[submodule "newlib-snapshot"]
+	path = newlib-snapshot
+	url = https://github.com/ft/newlib-snapshot.git

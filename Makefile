@@ -1,4 +1,5 @@
 PACKAGES = gdb-binutils-arm-none-eabi-snapshot gcc-arm-none-eabi-snapshot
+PACKAGES += newlib-snapshot
 
 SH = /bin/sh
 BASH = /bin/bash
