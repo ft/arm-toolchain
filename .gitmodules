@@ -7,3 +7,6 @@
 [submodule "newlib-snapshot"]
 	path = newlib-snapshot
 	url = https://github.com/ft/newlib-snapshot.git
+[submodule "libstdc++-arm-none-eabi-newlib-snapshot"]
+	path = libstdc++-arm-none-eabi-newlib-snapshot
+	url = https://github.com/ft/libstdcxx-newlib-snapshot.git
