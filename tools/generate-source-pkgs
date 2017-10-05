@@ -3,9 +3,29 @@
 already_done () {
     pkg="$1"
     version="$2"
-    test -e "${pkg}_${version}".debian.tar.xz || return 1
-    test -e "${pkg}_${version}".dsc || return 1
-    printf 'Source package for %s version %s already exists.\n' \
+    base="${pkg}_${version}_source"
+    buildinfo="${base}.buildinfo"
+
+    printf 'Checking source artifacts for %s\n' "$pkg"
+    state=find-pkgs
+    while IFS= read -r line; do
+        case "$state" in
+        find-pkgs)
+            test "$line" = "Checksums-Sha1:" || continue
+            state=process
+            ;;
+        process)
+            case "$line" in
+            " "*) : ;;
+            *) break ;;
+            esac
+            file=$(printf '%s' "$line" | awk '{print $3}')
+            printf '  - Checking for %s\n' "$file"
+            test -f "$file" || return 1
+        esac
+    done < "$buildinfo"
+
+    printf 'Source artifacts for %s version %s already exists.\n' \
            "$pkg" "$version"
     return 0
 }
