@@ -8,9 +8,10 @@ already_done () {
     version="$2"
     arch=$(dpkg-architecture -qDEB_BUILD_ARCH)
     base="${pkg}_${version}_${arch}"
-    buildinfo="${base}.buildinfo"
+    buildinfo="${results}/${base}.buildinfo"
 
     printf 'Checking binary artifacts for %s\n' "$pkg"
+    test -f "$buildinfo" || return 1
     state=find-pkgs
     while IFS= read -r line; do
         case "$state" in

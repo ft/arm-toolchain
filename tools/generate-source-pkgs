@@ -7,6 +7,7 @@ already_done () {
     buildinfo="${base}.buildinfo"
 
     printf 'Checking source artifacts for %s\n' "$pkg"
+    test -f "$buildinfo" || return 1
     state=find-pkgs
     while IFS= read -r line; do
         case "$state" in
