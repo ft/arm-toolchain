@@ -62,7 +62,7 @@ fetch-results: binary-packages
 
 $(PACKAGES)::
 	$(GENERATE_SOURCE_PKGS) $@
-	$(GENERATE_BINARY_PKGS) $@
+	$(GENERATE_BINARY_PKGS) $(PBUILDER_RESULTS) $@
 
 .PHONY: all binary-packages fetch-results prepare source-packages
 .PHONY: chroot chroot-hooks chroot-update
