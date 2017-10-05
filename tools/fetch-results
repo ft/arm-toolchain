@@ -25,7 +25,7 @@ fetch_result () {
     version="$3"
     arch="$4"
     base="${pkg}_${version}_${arch}"
-    dsc="${pkg}_${version}.dsc"
+    buildinfo="${base}.buildinfo"
     for ext in build buildinfo changes; do
         file="$dir"/"$base"."$ext"
         try_and_copy "$file"
@@ -34,23 +34,20 @@ fetch_result () {
     while IFS= read -r line; do
         case "$state" in
         find-pkgs)
-            test "$line" = "Package-List:" || continue
+            test "$line" = "Checksums-Sha1:" || continue
             state=process
             ;;
         process)
             case "$line" in
-            " "*) : ;;
+            " "*.deb) : ;;
+            " "*) continue ;;
             *) break ;;
             esac
-            pkg=$(printf '%s' "$line" | awk '{print $1}')
-            file="$dir"/"$pkg"_"$version"_"$arch".deb
-            try_and_copy "$file"
-            file="$dir"/"$pkg"_"$version"_"all".deb
-            try_and_copy "$file"
-            file="$dir"/"$pkg"-dbgsym_"$version"_"$arch".deb
+            pkg=$(printf '%s' "$line" | awk '{print $3}')
+            file="$dir"/"$pkg"
             try_and_copy "$file"
         esac
-    done < "$dsc"
+    done < "$buildinfo"
 }
 
 for pkg in "$@"; do
